@@ -1,5 +1,5 @@
 #!/bin/bash
-# deploy_dynamodb.sh
+# 02_deploy_dynamodb.sh
 # Creates a DynamoDB table for TuneSugar to store audio metadata.
 
 set -e

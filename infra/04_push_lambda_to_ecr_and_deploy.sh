@@ -1,5 +1,5 @@
 #!/bin/bash
-# push_lambda_to_ecr_and_deploy.sh
+# 04_push_lambda_to_ecr_and_deploy.sh
 # Builds the analyzer Lambda image, pushes it to ECR, and creates/updates the Lambda with env vars.
 
 set -e

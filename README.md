@@ -43,16 +43,16 @@ All commands below run from the `infra/` directory.
 
    ```bash
    ./01_create_s3_and_ecr.sh
-   ./deploy_dynamodb.sh
-   ./02_create_roles_and_policies.sh
+   ./02_deploy_dynamodb.sh
+   ./03_create_roles_and_policies.sh
    ```
 
 3. **Deploy Services**
 
    ```bash
-   ./push_lambda_to_ecr_and_deploy.sh
-   ./push_app_to_ecr.sh
-   ./ecs_run_task.sh
+   ./04_push_lambda_to_ecr_and_deploy.sh
+   ./05_push_app_to_ecr.sh
+   ./06_ecs_run_task.sh
    ```
 
 4. **Test the API**
