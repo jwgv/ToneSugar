@@ -1,13 +1,14 @@
 # 🎵 TuneSugar
 
 **TuneSugar** is a lightweight, cloud-native audio metadata analyzer built with FastAPI and AWS.
+
 It features event-driven, serverless architecture using:
 
-* **ECS Fargate** – containerized FastAPI API.
-* **Lambda (Container Image)** – performs waveform analysis (tempo, duration).
-* **S3** – stores uploaded audio and generated analysis.
-* **DynamoDB** – keeps structured metadata records.
-* **IAM** – minimal roles for least privilege.
+* **ECS Fargate** - containerized FastAPI API.
+* **Lambda (Container Image)** - performs waveform analysis (tempo, duration).
+* **S3** - stores uploaded audio and generated analysis.
+* **DynamoDB** - keeps structured metadata records.
+* **IAM** - minimal roles for least privilege.
 
 
 ## Architecture Overview
@@ -62,6 +63,48 @@ All commands below run from the `infra/` directory.
    ```
 
 
+## Audio Analysis
+
+TuneSugar extracts lightweight audio metadata and stores it alongside your file.
+
+- What it extracts:
+  - duration (seconds)
+  - tempo (BPM, optional) and detected beats count
+- How it's computed:
+  - Duration: tries fast header reads first (MP3 via Mutagen), then SoundFile info for PCM (e.g., WAV), then librosa.get_duration, with a minimal load fallback as last resort.
+  - Tempo: uses librosa on a short excerpt for speed, resampling to TEMPO_SR and processing up to TEMPO_MAX_SECONDS; falls back to an aggregate tempo() estimate if beat tracking is unstable. Can be disabled entirely.
+- Environment variables (defaults in parentheses):
+  - ENABLE_TEMPO: enable/disable tempo analysis (true)
+  - TEMPO_MAX_SECONDS: max audio seconds analyzed for tempo (30)
+  - TEMPO_SR: resample rate used for tempo analysis (22050)
+  - ANALYSIS_PREFIX: S3 key prefix for JSON analysis output (analysis/)
+- Output targets:
+  - S3: JSON written to `${ANALYSIS_PREFIX}<basename>.json`
+  - DynamoDB: updates `duration` and `tempo` on the item for the uploaded file (if a `file_id` is provided)
+
+Example analysis JSON saved to S3:
+
+```json
+{
+  "duration": 123.45,
+  "tempo": 128.0,
+  "beats": 256,
+  "duration_method": "soundfile.info",
+  "timings": {
+    "download_s": 0.21,
+    "duration_s": 0.01,
+    "tempo_s": 0.35
+  },
+  "tempo_enabled": true,
+  "tempo_max_seconds": 30.0,
+  "tempo_sr": 22050
+}
+```
+
+Notes:
+- Tempo is an estimate and can vary for complex or non-percussive audio.
+- Short excerpts are used to keep Lambda fast and inexpensive; increase accuracy by raising TEMPO_MAX_SECONDS (costs more time/memory) or disable via ENABLE_TEMPO=false.
+
 ## DynamoDB Table Schema
 
 | Attribute     | Type | Description              |
@@ -95,7 +138,7 @@ This removes:
 
 ## Extending TuneSugar
 
+* Add a UI for uploading audio files and viewing results.
 * Add OpenAI’s Whisper API in Lambda to generate **audio descriptions**.
-* Store analysis output in DynamoDB for UI display.
 * Use API Gateway in front of ECS for HTTPS endpoints.
 * Add TTL (Time To Live) on DynamoDB for automatic cleanup.
