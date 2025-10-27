@@ -10,7 +10,7 @@ It features event-driven, serverless architecture using:
 * **IAM** – minimal roles for least privilege.
 
 
-## ⚙️ Architecture Overview
+## Architecture Overview
 
 ```text
 User → FastAPI (ECS) → S3 (Upload)
@@ -19,7 +19,7 @@ User → FastAPI (ECS) → S3 (Upload)
 ```
 
 
-## 🧩 Prerequisites
+## Prerequisites
 
 * AWS account with `aws-cli` configured.
 * Docker installed.
@@ -27,34 +27,7 @@ User → FastAPI (ECS) → S3 (Upload)
 * IAM user/role with permission to create ECS, Lambda, S3, ECR, and DynamoDB.
 
 
-## 📁 Project Structure
-
-
-tunesugar/
-├── app/               # FastAPI container (ECS)
-│   ├── main.py
-│   ├── db_dynamo.py
-│   ├── requirements.txt
-│   └── Dockerfile
-│
-├── analyzer/          # Lambda function (container image)
-│   ├── handler.py
-│   ├── requirements.txt
-│   └── Dockerfile
-│
-├── infra/             # Deployment and cleanup scripts
-│   ├── deploy_dynamodb.sh
-│   ├── push_app_to_ecr.sh
-│   ├── push_lambda_to_ecr_and_deploy.sh
-│   ├── ecs_run_task.sh
-│   ├── cleanup_all_resources.sh
-│   ├── env.example
-│   └── ecs_taskdef.json
-└── README.md
-```
-
-
-## 🚀 Deployment Steps
+## Deployment Steps
 
 All commands below run from the `infra/` directory.
 
@@ -89,7 +62,7 @@ All commands below run from the `infra/` directory.
    ```
 
 
-## 🧠 DynamoDB Table Schema
+## DynamoDB Table Schema
 
 | Attribute     | Type | Description              |
 | ------------- | ---- | ------------------------ |
@@ -101,7 +74,7 @@ All commands below run from the `infra/` directory.
 | `analyzed_at` | S    | ISO UTC timestamp        |
 
 
-## 🧹 Cleanup
+## Cleanup
 
 To delete all billable AWS resources after testing:
 
@@ -120,7 +93,7 @@ This removes:
 * IAM roles
 
 
-## 🧰 Extending TuneSugar
+## Extending TuneSugar
 
 * Add OpenAI’s Whisper API in Lambda to generate **audio descriptions**.
 * Store analysis output in DynamoDB for UI display.
