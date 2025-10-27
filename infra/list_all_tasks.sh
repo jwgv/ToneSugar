@@ -1,0 +1,1 @@
+ws ecs list-tasks --cluster tunesugar-cluster --desired-status RUNNING

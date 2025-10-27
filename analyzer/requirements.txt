@@ -1,0 +1,8 @@
+boto3
+librosa
+audioread
+soundfile
+numpy
+mutagen
+scipy
+resampy

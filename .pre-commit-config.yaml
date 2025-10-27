@@ -1,0 +1,40 @@
+# test before initial commit with: pre-commit run --all-file
+repos:
+  - repo: https://github.com/psf/black
+    rev: 24.8.0
+    hooks:
+      - id: black
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+#  - repo: https://github.com/pre-commit/mirrors-mypy
+#    rev: v1.11.2
+#    hooks:
+#      - id: mypy
+#        additional_dependencies: [pydantic, pydantic-settings]
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.1.1
+    hooks:
+      - id: flake8
+        additional_dependencies: []
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
+      - id: python-check-blanket-noqa
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: pytest -q
+        language: python
+        language_version: python3.13
+        pass_filenames: false
+        types: [python]
+        additional_dependencies:
+          - pytest==8.4.2
+          - pytest-asyncio==0.24.0
+          - fastapi==0.115.0
+          - httpx==0.27.2
+          - python-multipart>=0.0.20
+

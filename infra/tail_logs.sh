@@ -1,0 +1,1 @@
+ aws logs tail "/ecs/tunesugar" --format short --follow

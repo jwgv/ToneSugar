@@ -1,0 +1,1 @@
+aws logs tail "/aws/lambda/tunesugar-analyzer-lambda" --follow --format short

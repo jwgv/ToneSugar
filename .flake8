@@ -1,0 +1,17 @@
+[flake8]
+# Exclude virtual environments and other non-source directories from linting
+exclude =
+    .git,
+    __pycache__,
+    .venv,
+    build,
+    dist,
+    .mypy_cache,
+    .pytest_cache
+
+# Keep in sync with Black configuration (matches tool.black in pyproject.toml)
+max-line-length = 100
+# Enable some useful defaults (these can be adjusted later if needed)
+extend-ignore = E501,W503,E203
+#    E203  # whitespace before ':' (Black compatibility)
+#    W503  # line break before binary operator (Black compatibility)

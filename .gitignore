@@ -1,0 +1,5 @@
+/infra/image_app.env
+/infra/.env
+/infra/tmp_taskdef.json
+/infra/ecs_taskdef.json
+/.venv/
